@@ -1,8 +1,10 @@
 /** @jsx jsx */
-import React, { useState } from "react";
+import { useState } from "react";
 import { css, jsx } from "@emotion/core";
 import SliderContent from "./SliderContent";
 import Slide from "./Slide";
+import Arrow from "./Arrow";
+import Dots from "./Dots";
 
 /**
  * @function Slider - The main component
@@ -21,11 +23,59 @@ const Slider = () => {
 
   // State - Object that stores the current translate value and the transition timing.
   const [state, setState] = useState({
-    translate: getWidth(),
+    activeIndex: 0,
+    translate: 0,
     transition: 0.45,
   });
 
-  const { translate, transition } = state;
+  const { translate, transition, activeIndex } = state;
+
+  // Active index starts from 0, so a slider of four imaes will have a maximum active index of three.
+  // The length of the array starts from one, so we have to do soma subtraction to check.
+
+  const dotClick = (i) => {
+    setState({
+      ...state,
+      activeIndex: i,
+      translate: i * getWidth(),
+    });
+  };
+
+  const nextSlide = () => {
+    // checkif we're on the last slide, if we are, go to the first slide.
+    if (activeIndex === images.length - 1) {
+      return setState({
+        ...state,
+        translate: 0,
+        activeIndex: 0,
+      });
+    }
+
+    // if we're not on the last slide, go to the next slide by translating the full width of the slide.
+    setState({
+      ...state,
+      activeIndex: activeIndex + 1,
+      translate: (activeIndex + 1) * getWidth(),
+    });
+  };
+
+  const prevSlide = () => {
+    // check if we're on the first slide, if we are, translate to the last slide.
+    if (activeIndex === 0) {
+      return setState({
+        ...state,
+        translate: (images.length - 1) * getWidth(),
+        activeIndex: images.length - 1,
+      });
+    }
+
+    // if we're not, translate to the previous slide.
+    setState({
+      ...state,
+      activeIndex: activeIndex - 1,
+      translate: (activeIndex - 1) * getWidth(),
+    });
+  };
 
   return (
     <div css={SliderCSS}>
@@ -39,6 +89,10 @@ const Slider = () => {
           <Slide key={i} content={img} />
         ))}
       </SliderContent>
+      <Arrow direction="left" handleClick={prevSlide} />
+      <Arrow direction="right" handleClick={nextSlide} />
+
+      <Dots handleClick={dotClick} slides={images} activeIndex={activeIndex} />
     </div>
   );
 };
