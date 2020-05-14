@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { css, jsx } from "@emotion/core";
 import SliderContent from "./SliderContent";
 import Slide from "./Slide";
@@ -11,15 +11,16 @@ import Dots from "./Dots";
  * @returns {JSX.Element}
  */
 
-const Slider = () => {
+// We get the width of the current viewport
+const getWidth = () => window.innerWidth;
+
+const Slider = (props) => {
   const images = [
     "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
     "https://images.unsplash.com/photo-1470341223622-1019832be824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2288&q=80",
     "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
     "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
   ];
-  // We get the width of the current viewport
-  const getWidth = () => window.innerWidth;
 
   // State - Object that stores the current translate value and the transition timing.
   const [state, setState] = useState({
@@ -29,6 +30,27 @@ const Slider = () => {
   });
 
   const { translate, transition, activeIndex } = state;
+
+  const autoPlayRef = useRef();
+
+  // set the current object of the component reference to the nexSlide function.
+  useEffect(() => {
+    autoPlayRef.current = nextSlide;
+  });
+
+  // call the next slide function once on component mount
+  useEffect(() => {
+    // call the next slide function passed as a reference in the current object.
+    const play = () => {
+      autoPlayRef.current();
+    };
+    if (props.autoPlay !== null) {
+      // call the play function every number of seconds.
+      const interval = setInterval(play, props.autoPlay * 1000);
+      // perform clean up and clear the interval.
+      return () => clearImmediate(interval);
+    }
+  }, [props.autoPlay]);
 
   // Active index starts from 0, so a slider of four imaes will have a maximum active index of three.
   // The length of the array starts from one, so we have to do soma subtraction to check.
@@ -89,12 +111,21 @@ const Slider = () => {
           <Slide key={i} content={img} />
         ))}
       </SliderContent>
+      {/* {!props.autoPlay && (
+        <React.Fragment> */}
       <Arrow direction="left" handleClick={prevSlide} />
       <Arrow direction="right" handleClick={nextSlide} />
+      {/* </React.Fragment>
+      )} */}
 
       <Dots handleClick={dotClick} slides={images} activeIndex={activeIndex} />
     </div>
   );
+};
+
+Slider.defaultProps = {
+  slides: [],
+  autoplay: null,
 };
 
 const SliderCSS = css`

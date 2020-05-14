@@ -1,11 +1,11 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
 import Slider from "./components/Slider";
 
 function App() {
   return (
     <div className="App">
-      <Slider />
+      <Slider autoPlay={3} />
     </div>
   );
 }
