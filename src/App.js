@@ -5,7 +5,7 @@ import Slider from "./components/Slider";
 function App() {
   return (
     <div className="App">
-      <Slider autoPlay={3} />
+      <Slider autoPlay={5} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
-// import React from "react";
-import styled from "@emotion/styled";
-
+/** @jsx jsx */
+import React from "react";
+// import styled from "@emotion/styled";
+import { css, jsx } from "@emotion/core";
 // const SliderContent = styled.div`
 //   transform: translateX(-${(props) => props.translate}px);
 //   transition: transform ease-out ${(props) => props.transition}s;
@@ -15,11 +16,18 @@ import styled from "@emotion/styled";
  * @returns {JSX.Element}
  */
 
-const SliderContent = styled.div`
-  transform: translateX(-${(props) => props.translate}px);
-  transition: transform ease-out ${(props) => props.transition}s;
-  height: 100%;
-  width: ${(props) => props.width}px;
-  display: flex;
-`;
+const SliderContent = (props) => (
+  <div
+    css={css`
+      transform: translateX(-${props.translate}px);
+      transition: transform ease-out ${props.transition}s;
+      height: 100%;
+      width: ${props.width}px;
+      display: flex;
+    `}
+  >
+    {props.children}
+  </div>
+);
+
 export default SliderContent;
