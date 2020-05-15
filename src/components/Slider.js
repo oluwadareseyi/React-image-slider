@@ -48,7 +48,6 @@ const Slider = (props) => {
     resizeRef.current = handleResize;
   });
 
-  let interval = null;
   // call the next slide function once on component mount
   useEffect(() => {
     // call the next slide function passed as a reference in the current object.
@@ -64,6 +63,7 @@ const Slider = (props) => {
       resizeRef.current();
     };
 
+    let interval = null;
     const transitionEnd = window.addEventListener("transitionend", smooth);
     const onResize = window.addEventListener("resize", resize);
     if (props.autoPlay) {
