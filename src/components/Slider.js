@@ -115,7 +115,7 @@ const Slider = (props) => {
     setState({
       ...state,
       activeSlide: i,
-      translate: translate + getWidth(),
+      translate: i < activeSlide ? 0 : translate + getWidth(),
     });
   };
 
