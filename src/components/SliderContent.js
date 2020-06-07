@@ -25,6 +25,7 @@ const SliderContent = (props) => (
       width: ${props.width}px;
       display: flex;
     `}
+    className="SliderContent"
   >
     {props.children}
   </div>
