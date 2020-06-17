@@ -85,7 +85,7 @@ const Slider = (props) => {
     if (transition === 0) setState({ ...state, transition: 0.45 });
   }, [state, transition]);
 
-  // Active index starts from 0, so a slider of four imaes will have a maximum active index of three.
+  // Active index starts from 0, so a slider of four images will have a maximum active index of three.
   // The length of the array starts from one, so we have to do soma subtraction to check.
 
   const smoothTransition = () => {

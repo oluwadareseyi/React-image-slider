@@ -19,7 +19,7 @@ import { css, jsx } from "@emotion/core";
 const SliderContent = (props) => (
   <div
     css={css`
-      transform: translateX(-${props.translate}px);
+      transform: translate3d(-${props.translate}px, 0px, 0px);
       transition: transform ease-out ${props.transition}s;
       height: 100%;
       width: ${props.width}px;
